@@ -9,6 +9,8 @@ const App = () => {
     const [category, setCategory] = useState('');
     const [customCategory, setCustomCategory] = useState('');
     const [type, setType] = useState('expense'); // default to 'expense'
+    const [date, setDate] = useState(''); // Date state
+
     const categories = ['Food', 'Travel', 'Shopping', 'Bills', 'Salary', 'Investment'];
 
     useEffect(() => {
@@ -24,11 +26,12 @@ const App = () => {
         e.preventDefault();
         const selectedCategory = category === 'Other' ? customCategory : category;
 
-        const res = await axios.post('http://localhost:5000/api/expenses', { 
-            title, 
-            amount, 
-            category: selectedCategory, 
-            type 
+        const res = await axios.post('http://localhost:5000/api/expenses', {
+            title,
+            amount,
+            category: selectedCategory,
+            type,
+            date  // Include date
         });
 
         setExpenses([...expenses, res.data]);
@@ -36,6 +39,7 @@ const App = () => {
         setAmount('');
         setCategory('');
         setCustomCategory('');
+        setDate('');
     };
 
     const deleteExpense = async (id) => {
@@ -48,13 +52,13 @@ const App = () => {
             <h1>Expense & Income Tracker</h1>
 
             <form onSubmit={addExpense}>
-                <input 
+                <input
                     type="text"
                     placeholder="Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
-                <input 
+                <input
                     type="number"
                     placeholder="Amount"
                     value={amount}
@@ -86,13 +90,20 @@ const App = () => {
                     />
                 )}
 
+                {/* Date Input */}
+                <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                />
+
                 <button type="submit">Add {type === 'income' ? 'Income' : 'Expense'}</button>
             </form>
 
             <ul>
                 {expenses.map(expense => (
                     <li key={expense._id}>
-                        {expense.title} - ${expense.amount} - {expense.type} - {expense.category}
+                        {expense.title} - ₹{expense.amount} - {expense.type} - {expense.category} - {new Date(expense.date).toLocaleDateString()}
                         <button onClick={() => deleteExpense(expense._id)}>Delete</button>
                     </li>
                 ))}

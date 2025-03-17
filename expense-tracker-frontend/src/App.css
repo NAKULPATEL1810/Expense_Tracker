@@ -26,7 +26,7 @@ form {
     margin-bottom: 20px;
 }
 
-input {
+input, select {
     padding: 10px;
     margin: 10px 0;
     font-size: 16px;
@@ -75,20 +75,4 @@ li button {
 
 li button:hover {
     background-color: #c82333;
-}
-
-select {
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-input[type="text"], input[type="number"] {
-    width: 100%;
-}
-
-button {
-    width: 100%;
 }
