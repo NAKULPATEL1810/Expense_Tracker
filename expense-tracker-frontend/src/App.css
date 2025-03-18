@@ -6,16 +6,16 @@ body {
 }
 
 .app {
-    max-width: 600px;
-    margin: 50px auto;
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    height: 100vh;
     padding: 20px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    box-sizing: border-box;
 }
 
-h1 {
+h1, h2 {
     color: #333;
     margin-bottom: 20px;
 }
@@ -23,7 +23,6 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
 }
 
 input, select {
@@ -75,4 +74,22 @@ li button {
 
 li button:hover {
     background-color: #c82333;
+}
+
+/* Three sections styling */
+.form-section {
+    flex: 1;
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.expense-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.income-section {
+    flex: 1;
+    padding-left: 20px;
+    border-left: 1px solid #ddd;
 }

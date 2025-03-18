@@ -26,11 +26,11 @@ const App = () => {
         e.preventDefault();
         const selectedCategory = category === 'Other' ? customCategory : category;
 
-        const res = await axios.post('http://localhost:5000/api/expenses', {
-            title,
-            amount,
-            category: selectedCategory,
-            type,
+        const res = await axios.post('http://localhost:5000/api/expenses', { 
+            title, 
+            amount, 
+            category: selectedCategory, 
+            type, 
             date  // Include date
         });
 
@@ -47,67 +47,88 @@ const App = () => {
         setExpenses(expenses.filter(expense => expense._id !== id));
     };
 
+    const filterByType = (type) => {
+        return expenses.filter(expense => expense.type === type);
+    };
+
     return (
         <div className="app">
-            <h1>Expense & Income Tracker</h1>
+            <div className="form-section">
+                <h1>Add {type === 'income' ? 'Income' : 'Expense'}</h1>
 
-            <form onSubmit={addExpense}>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <input
-                    type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                />
-
-                {/* Transaction Type: Expense or Income */}
-                <select value={type} onChange={(e) => setType(e.target.value)}>
-                    <option value="expense">Expense</option>
-                    <option value="income">Income</option>
-                </select>
-
-                {/* Predefined Categories */}
-                <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                    <option value="">Select Category</option>
-                    {categories.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                    <option value="Other">Other</option>
-                </select>
-
-                {/* Custom Category Input */}
-                {category === 'Other' && (
-                    <input
+                <form onSubmit={addExpense}>
+                    <input 
                         type="text"
-                        placeholder="Custom Category"
-                        value={customCategory}
-                        onChange={(e) => setCustomCategory(e.target.value)}
+                        placeholder="Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                     />
-                )}
+                    <input 
+                        type="number"
+                        placeholder="Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                    />
 
-                {/* Date Input */}
-                <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
+                    {/* Transaction Type: Expense or Income */}
+                    <select value={type} onChange={(e) => setType(e.target.value)}>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
 
-                <button type="submit">Add {type === 'income' ? 'Income' : 'Expense'}</button>
-            </form>
+                    {/* Predefined Categories */}
+                    <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="">Select Category</option>
+                        {categories.map(cat => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                        <option value="Other">Other</option>
+                    </select>
 
-            <ul>
-                {expenses.map(expense => (
-                    <li key={expense._id}>
-                        {expense.title} - ₹{expense.amount} - {expense.type} - {expense.category} - {new Date(expense.date).toLocaleDateString()}
-                        <button onClick={() => deleteExpense(expense._id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+                    {/* Custom Category Input */}
+                    {category === 'Other' && (
+                        <input
+                            type="text"
+                            placeholder="Custom Category"
+                            value={customCategory}
+                            onChange={(e) => setCustomCategory(e.target.value)}
+                        />
+                    )}
+
+                    {/* Date Input */}
+                    <input 
+                        type="date" 
+                        value={date} 
+                        onChange={(e) => setDate(e.target.value)} 
+                    />
+
+                    <button type="submit">Add {type === 'income' ? 'Income' : 'Expense'}</button>
+                </form>
+            </div>
+
+            <div className="expense-section">
+                <h2>Expenses</h2>
+                <ul>
+                    {filterByType('expense').map(expense => (
+                        <li key={expense._id}>
+                            {expense.title} - ₹{expense.amount} - {new Date(expense.date).toLocaleDateString()} - {expense.category}
+                            <button onClick={() => deleteExpense(expense._id)}>Delete</button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <div className="income-section">
+                <h2>Incomes</h2>
+                <ul>
+                    {filterByType('income').map(income => (
+                        <li key={income._id}>
+                            {income.title} - ₹{income.amount} - {new Date(income.date).toLocaleDateString()} - {income.category}
+                            <button onClick={() => deleteExpense(income._id)}>Delete</button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
